@@ -47,7 +47,7 @@ app.controller('introCtrl', ['$scope', function ($scope) {
     }
 
     function zoomWorld() {
-        if (counterForInterval == 3) //**when the animation is ending.**
+        if (counterForInterval == 2) //**when the animation is ending.**
         {
             clearInterval(myInterval);
             document.location='#/map';
