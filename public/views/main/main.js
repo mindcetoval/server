@@ -1,6 +1,9 @@
-app.controller('introCtrl', ['$scope', function($scope) {
+app.controller('introCtrl', ['$scope', function ($scope) {
     var stage;
-
+    var bitmapWorld;
+    var bitmapZone;
+    var myInterval;
+    var counterForInterval = 0;
     console.log(document.getElementById("myCanvas"));
     stage = new createjs.Stage("myCanvas");
     var world = new Image();
@@ -16,15 +19,11 @@ app.controller('introCtrl', ['$scope', function($scope) {
     bitmapZone.x = 520;
     bitmapZone.y = 100;
     bitmapZone.addEventListener("click", dropsShadow)
-    // bitmap.scaleX = 0.2;
-    //bitmap.scaleY = 0.2;
+        // bitmap.scaleX = 0.2;
+        //bitmap.scaleY = 0.2;
     stage.addChild(bitmapZone);
 
     // bitmap.shadow = new createjs.Shadow("#000000", 5, 5, 10);
-
-
-
-    createjs.Ticker.addEventListener("tick", stage);
 
     /* var stage = new createjs.Stage(document.getElementById("myCanvas"));
      var image = new createjs.Bitmap("images/movWorld.png");
@@ -37,7 +36,7 @@ app.controller('introCtrl', ['$scope', function($scope) {
 
     function dropsShadow(event) {
         myInterval = setInterval(zoomWorld, 100)
-        // event.currentTarget.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+            // event.currentTarget.shadow = new createjs.Shadow("#000000", 5, 5, 10);
     }
 
     function zoomWorld() {
