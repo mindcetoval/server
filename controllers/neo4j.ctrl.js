@@ -10,19 +10,49 @@ var dbRemote = require("seraph")({
     pass: 'VcTQbMhq4N9GmkmXhlgj'
 });
 
-var getUser = function (req, res) {
-    dbRemote.find({ nickname: 'ofer' }, 'User', function (err, results) {
+var getUser = function (res, username) {
+    dbRemote.query("match (user: User {nickname: {nickname}})-[:HAS]-(trophies) " +
+                   "with trophies, sum(trophies.points) as total match (user: User {nickname: {nickname}})-[:STUDIES]-(lessons) " +
+                   "return user, collect(distinct lessons) as lessons, collect(distinct trophies) as trophies, sum(distinct total) as total",
+                   { nickname: username }, function (err, results) {
         if (err) {
             // A Neo4j exception occurred
-            return;
+            throw err;
         }
+
         // do something with the matched node(s).
-        console.log(results);
+        res.send(results[0]);
+    });
+}
+
+var getUsers = function () {
+    var allUsers = ['gazu','ofer','sitonZ','kfirstar'];
+    var allUsersData = [];
+
+    for (var i = 0; i<4; i++) {
+        allUsersData.push(getUser(allUsers[i]));
+    }
+
+    return allUsersData;
+}
+
+var getWorld = function (res) {
+    dbRemote.query("match (kp:KnowledgePoint) with distinct kp match (kp)-[:LEADS_TO]->(m) return kp, collect(m)",
+        function (err, results) {
+        if (err) {
+            // A Neo4j exception occurred
+            throw err;
+        }
+
+        // do something with the matched node(s).
+        res.send(results);
     });
 }
 
 module.exports = {
     router: router,
     db: dbRemote,
-    getUser: getUser
+    getUser: getUser,
+    getUsers: getUsers,
+    getWorld: getWorld
 }
