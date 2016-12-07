@@ -10,6 +10,20 @@
       var layer;
       var map;
 
+      var height = 7;
+      var width = 7;
+
+      var places = [
+        {"lat":-36.125,"lng":5.875},
+        {"lat":-55.875,"lng":4.375},
+        {"lat":-70.875,"lng":27.5},
+        {"lat":-65.875,"lng":53.125},
+        {"lat":-79.875,"lng":86},
+        {"lat":-44,"lng":83.875},
+        {"lat":-32.5,"lng":116.5},
+        {"lat":-26,"lng":70.875}
+      ];
+
       function init() {
         var mapMinZoom = 0;
         var mapMaxZoom = 4;
@@ -31,25 +45,30 @@
           tms: false
         }).addTo(map);
 
-        var	bounds = new L.LatLngBounds(
-          new L.LatLng(-50,65),
-          new L.LatLng(-55,70));
+        var count = 1;
+        places.forEach(function(place) {
+          var	bounds = new L.LatLngBounds(
+            new L.LatLng(place.lat, place.lng),
+            new L.LatLng(place.lat - height, place.lng + width));
 
-        var overlay = new L.ImageOverlay("images/dragon-clip-art-9acqq9zTM.png", bounds, {
-          opacity: 1.0,
-          interactive: true
-        });
+          var overlay = new L.ImageOverlay("images/markers/" + count + ".png", bounds, {
+            opacity: 1.0,
+            interactive: true,
+            attribution: count
+          });
 
-        map.addLayer(overlay);
+          map.addLayer(overlay);
+          count++;
+        })
 
        map.on('click', function(ev) {
-          console.log(ev.latlng); // ev is an event object (MouseEvent in this case)
+          console.log(JSON.stringify(ev.latlng)); // ev is an event object (MouseEvent in this case)
        });
       }
     </script>
     <style>
       html, body, #map { width:100%; height:100%; margin:0; padding:0; z-index: 1; }
-      #slider{ position: absolute; top: 10px; right: 10px; z-index: 5; }
+      #slider { position: absolute; top: 10px; right: 10px; z-index: 5; }
     </style>
   </head>
   <body onload="init()">
