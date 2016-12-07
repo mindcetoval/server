@@ -11,9 +11,13 @@ var dbRemote = require("seraph")({
 });
 
 var getUser = function (req, res) {
-    dbRemote.query('MATCH u=(User) return u', {}, function (err, result) {
-        if (err) throw err;
-        console.log(result);
+    dbRemote.find({ nickname: 'ofer' }, 'User', function (err, results) {
+        if (err) {
+            // A Neo4j exception occurred
+            return;
+        }
+        // do something with the matched node(s).
+        console.log(results);
     });
 }
 
