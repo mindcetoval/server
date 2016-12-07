@@ -23,6 +23,7 @@ app.controller('introCtrl', ['$scope', function($scope) {
     // bitmap.shadow = new createjs.Shadow("#000000", 5, 5, 10);
 
 
+
     createjs.Ticker.addEventListener("tick", stage);
 
     /* var stage = new createjs.Stage(document.getElementById("myCanvas"));
@@ -33,8 +34,6 @@ app.controller('introCtrl', ['$scope', function($scope) {
      
      //createjs.Ticker.addEventListener("tick", handleTick);
      stage.update();*/
-
-    // });
 
     function dropsShadow(event) {
         myInterval = setInterval(zoomWorld, 100)
