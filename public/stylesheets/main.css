@@ -1,6 +1,6 @@
 body {
   font-family: Alef !important;
-    background-image: url(images/space.png);
+  background-image: url(../images/space.png);
 }
 .headline {
     width: 30%;

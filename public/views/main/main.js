@@ -45,6 +45,7 @@ app.controller('introCtrl', ['$scope', function ($scope) {
         if (counterForInterval == 4) //**when the animation is ending.**
         {
             clearInterval(myInterval);
+            document.location='#/map';
 
         }
         if (counterForInterval < 3) {
