@@ -1,10 +1,15 @@
 <html ng-app='corbisApp'>
-    <head>
-        <title>Corbis</title>
-        <script src='libs/angular/angular.min.js'></script>
-        <script src='javascripts/app.js'></script>
-    </head>
-    <body ng-controller='mainCtrl'>
-        {{message}}
-    </body>
+
+<head>
+    <title>Corbis</title>
+    <script src='libs/angular/angular.min.js'></script>
+    <script src='libs/angular/angular-route.min.js'></script> 
+    <script src='javascripts/app.js'></script>
+    <link rel='stylesheet' href='stylesheets/main.css'>
+</head>
+
+<body ng-controller='mainCtrl'>
+    <div ng-view></div>
+</body>
+
 </html>
