@@ -29,7 +29,7 @@ var getUsers = function (res) {
     dbRemote.query("match (u: User)-[:HAS]->(t) " +
                    "with u, collect(t) as trophies, sum(t.points) as total " +
                    "match (user: User {nickname : u.nickname})-[:STUDIES]->(l) " +
-                   "return u, trophies, collect(l) as lessons, total",
+                   "return u as user, trophies, collect(l) as lessons, total",
                    function (err, results) {
         if (err) {
             // A Neo4j exception occurred
