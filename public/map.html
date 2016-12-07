@@ -14,14 +14,14 @@
       var width = 7;
 
       var places = [
-        {"lat":-36.125,"lng":5.875},
-        {"lat":-55.875,"lng":4.375},
-        {"lat":-70.875,"lng":27.5},
-        {"lat":-65.875,"lng":53.125},
-        {"lat":-79.875,"lng":86},
-        {"lat":-44,"lng":83.875},
-        {"lat":-32.5,"lng":116.5},
-        {"lat":-26,"lng":70.875}
+        [-36.125, 5.875],
+        [-55.875, 4.375],
+        [-70.875, 27.5],
+        [-65.875, 53.125],
+        [-79.875, 86],
+        [-44, 83.875],
+        [-32.5, 116.5],
+        [-26, 70.875]
       ];
 
       function init() {
@@ -48,8 +48,8 @@
         var count = 1;
         places.forEach(function(place) {
           var	bounds = new L.LatLngBounds(
-            new L.LatLng(place.lat, place.lng),
-            new L.LatLng(place.lat - height, place.lng + width));
+            new L.LatLng(place[0], place[1]),
+            new L.LatLng(place[0] - height, place[1] + width));
 
           var overlay = new L.ImageOverlay("images/markers/" + count + ".png", bounds, {
             opacity: 1.0,
@@ -59,7 +59,9 @@
 
           map.addLayer(overlay);
           count++;
-        })
+        });
+      
+      var polyline = L.polyline(places, { color: 'red' }).addTo(map);
 
        map.on('click', function(ev) {
           console.log(JSON.stringify(ev.latlng)); // ev is an event object (MouseEvent in this case)
