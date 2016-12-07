@@ -33,6 +33,8 @@ app.controller('introCtrl', ['$scope', function ($scope) {
      
      //createjs.Ticker.addEventListener("tick", handleTick);
      stage.update();*/
+    createjs.Ticker.addEventListener("tick", stage);
+    
 
     function dropsShadow(event) {
         myInterval = setInterval(zoomWorld, 100)
