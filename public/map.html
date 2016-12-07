@@ -1,17 +1,19 @@
-<div class=''>
-  <table class='table table-striped pull-right' id='points-table'>
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>שם</th>
-        <th>נקודות</th>
+<div class='map-container'>
+  <div class='pull-right' style='position: relative; z-index: 10;'>
+    <table class='table table-striped' id='points-table'>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>שם</th>
+          <th>נקודות</th>
+        </tr>
+      </thead>
+      <tr ng-repeat='user in users'>
+        <td>{{$index + 1}}</td>
+        <td>{{user.user.nickname}}</td>
+        <td>{{user.trophies.length}}</td>
       </tr>
-    </thead>
-    <tr ng-repeat='user in users'>
-      <td>{{$index + 1}}</td>
-      <td>{{user.user.nickname}}</td>
-      <td>{{user.trophies.length}}</td>
-    </tr>
-  </table>
+    </table>
+  </div>
   <div id="map"></div>
 </div>
