@@ -5,6 +5,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
     <link rel="stylesheet" href="stylesheets/leaflet.css" />
+    <link rel="stylesheet" href="stylesheets/map.css" />
     <script src="http://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
     <script>
       var layer;
@@ -53,6 +54,20 @@
     </style>
   </head>
   <body onload="init()">
+    <table class='table table-striped pull-right' id='points-table'>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>שם</th>
+          <th>נקודות</th>
+        </tr>
+      </thead>
+      <tr ng-repeat='user in users'>
+        <td>{{$index + 1}}</td>
+        <td>{{user.user.nickname}}</td>
+        <td>{{user.trophies.length}}</td>
+      </tr>
+    </table>
     <div id="map"></div>
     <input id="slider" type="range" min="0" max="1" step="0.1" value="1" oninput="layer.setOpacity(this.value)">
   </body>
