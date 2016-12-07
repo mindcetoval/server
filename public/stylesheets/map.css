@@ -1,7 +1,13 @@
 #points-table {
-    opacity: 40%;
-    width: 200px;
-    height: 200px;
+    opacity: 0.9;
+    width: 240px;
+    height: 240px;
+    direction: rtl;
+    text-align: center;
+    background-color: gray;
+    border-radius: 10px;
+    margin-right: 5px;
+    margin-top: 5px;
 }
 
 #map {
@@ -10,4 +16,5 @@
     margin: 0;
     padding: 0;
     z-index: 1;
-  }
+    position: absolute;
+}
