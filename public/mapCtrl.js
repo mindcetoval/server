@@ -215,7 +215,7 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
                 });
             }
         });
-
+        
         //buildNodeLinesForUser($scope.users[1].user.nickname, $scope.users[1].lessons);
 
         // Build the images on the places
@@ -230,12 +230,19 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
                 interactive: true
             });
 
-            L.circleMarker(new L.LatLng(place[0], place[1]), circleOptions)
-                //.on('click', moveMarker(place))
-                .addTo(map);
+            overlays.push(overlay);
+
+            L.circleMarker(new L.LatLng(place[0], place[1]), circleOptions).addTo(map);
+
 
             map.addLayer(overlay);
             count++;
+        });
+
+        // make the first castle play the movie;
+        overlays[0].on('click', function() {
+            console.log('clicked first');
+            showVideo();
         });
 
         // build all lines between knowledge points
@@ -383,4 +390,21 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
 
         return mapD;
     }
+
 }]);
+
+function showVideo() {
+    var screen = document.getElementById('videoscreen');
+    var scores = document.getElementById('scores');
+    var vid = document.getElementById('castleVid');
+
+    scores.style.display = "none";
+    screen.style.display = "block";
+
+    vid.onended = function() {
+        scores.style.display = "block";
+        screen.style.display = "none";
+    };
+
+    vid.play();
+}
