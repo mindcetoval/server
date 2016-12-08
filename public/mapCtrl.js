@@ -4,9 +4,9 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
     $scope.data = [];
     $http.get('/users').success(function (data) {
         $scope.users = data;
+
         $http.get('/world').success(function (res) {
             $scope.data = res;
-
             init();
         }).error(function (err) {
             console.log(err);
@@ -160,7 +160,6 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
 
     }
 
-
     function findNextLocation(kpId) {
         return mapData[mapData[kpId].sons[0].lesID].location;
     }
@@ -168,11 +167,13 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
     function buildLessonsLinkedList(userLessons) {
         var node = userLessons[0];
         var firstNode = node;
+
+        debugger
         for (var i = 1; i < userLessons.length; i++) {
             node.leadsTo = _.find($scope.data, function (part) { return part.lesID === userLessons[i].lesID; });
             node = node.leadsTo;
+            delete node.leadsTo;
         }
-
 
         return firstNode;
     }
