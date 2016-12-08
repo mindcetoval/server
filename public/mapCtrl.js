@@ -2,6 +2,7 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
     $scope.users = [];
     $scope.currModalUser = "";
     $scope.data = [];
+    $scope.avatarsMarkers = [];
     $http.get('/users').success(function (data) {
         $scope.users = data;
 
@@ -96,10 +97,8 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
             }
         });
 
-        var avatarsMarkers = [];
-
         $scope.users.forEach(function (curruser) {
-            avatarsMarkers.push({
+            $scope.avatarsMarkers.push({
                 user: curruser.user,
                 marker: L.animatedMarker([mapData[curruser.user.currLesID].location], { icon: new avatarIcon({ iconUrl: 'images/' + curruser.user.avatar }) }).addTo(map)
             });
@@ -146,15 +145,29 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
             wholePolyline = [];
         }
 
-
-        var line = L.polyline([mapData[avatarsMarkers[0].user.currLesID].location, , findNextLocation(avatarsMarkers[0].user.currLesID)]);
-        avatarsMarkers[0] = L.animatedMarker(line.getLatLngs());
-            
+        moveMarker(93);
 
         map.on('click', function (ev) {
             console.log(JSON.stringify(ev.latlng)); // ev is an event object (MouseEvent in this case)
         });
     };
+
+    function moveMarker(userid) {
+        var markerToMove = null;
+        var index = 0;
+
+        $scope.avatarsMarkers.forEach(function (currmarker) {
+            if (currmarker.user.id == userid) {
+                markerToMove = currmarker;
+            }
+            else {
+                index++;
+            }
+        });
+
+        var line = L.polyline([mapData[markerToMove.user.currLesID].location, findNextLocation(markerToMove.user.currLesID)]);
+        $scope.avatarsMarkers[index].marker.setLine(line.getLatLngs());
+    }
 
     function buildNodeLines(lessonNodes, bFade) {
 
