@@ -3,10 +3,10 @@ app.controller('introCtrl', ['$scope', function ($scope) {
     var spritesheet;
     var animation;
     var bitmapZone;
-   var mySIForDrop;
-var mySIForStart;
-var asteroid;
-var counterForSetInterval=0;
+    var mySIForDrop;
+    var mySIForStart;
+    var asteroid;
+    var counterForSetInterval = 0;
 
     stage = new createjs.Stage("myCanvas");
     var world = new Image();
@@ -33,7 +33,7 @@ var counterForSetInterval=0;
 
     createjs.Ticker.setFPS(12);
     createjs.Ticker.addEventListener("tick", stage);
-     mySIForStart = setInterval(dropAsteroid,5000);
+    mySIForStart = setInterval(dropAsteroid, 5000);
 
     function playAnimtion(event) {
         animation.gotoAndPlay(2);
@@ -44,27 +44,27 @@ var counterForSetInterval=0;
         document.location = '#/map';
     }
 
-   function dropAsteroid(){
-    var asteroidImg = new Image();
+    function dropAsteroid() {
+        var asteroidImg = new Image();
         asteroidImg.src = "images/asteroid.png";
         asteroid = new createjs.Bitmap(asteroidImg);
         stage.addChild(asteroid);
-    var randomPosition = Math.random()*(1400-1)+1;
-    asteroid.x=randomPosition;
-    mySIForDrop = setInterval(function() {
-        
-        if(counterForSetInterval == 30)
-            {
+        var randomPosition = Math.random() * (1400 - 1) + 1;
+        asteroid.x = randomPosition;
+        mySIForDrop = setInterval(function () {
+
+            if (counterForSetInterval == 30) {
                 clearInterval(mySIForDrop);
-                
+
                 counterForSetInterval = 0;
                 stage.removeChild(asteroid);
             }
-        counterForSetInterval++;
-        asteroid.x = asteroid.x+20;
-        asteroid.y += 10;
-        asteroid.scaleX*=0.8;
-        asteroid.scaleY*=0.8;
-        
-    },50);
+            counterForSetInterval++;
+            asteroid.x = asteroid.x + 20;
+            asteroid.y += 10;
+            asteroid.scaleX *= 0.8;
+            asteroid.scaleY *= 0.8;
+
+        }, 50);
+    }
 }]);
