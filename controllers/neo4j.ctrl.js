@@ -12,7 +12,10 @@ var dbRemote = require("seraph")({
 
 var getUser = function (res, username) {
     dbRemote.query("match (user: User {nickname: {nickname}})-[:HAS]-(trophies) " +
-                   "with trophies, sum(trophies.points) as total match (user: User {nickname: {nickname}})-[:STUDIES]-(lessons) " +
+                   "with trophies, sum(trophies.points) as total " +
+                   "match (user: User {nickname: {nickname}})-[:STUDIES]-(lessons) " +
+                   "with trophies, total, user, lessons " +
+                   "order by lessons.lesID " +
                    "return user, sum(distinct total) as total, collect(distinct trophies) as trophies, collect(distinct lessons) as lessons",
                    { nickname: username }, function (err, results) {
         if (err) {
@@ -29,6 +32,8 @@ var getUsers = function (res) {
     dbRemote.query("match (u: User)-[:HAS]->(t) " +
                    "with u, collect(t) as trophies, sum(t.points) as total " +
                    "match (user: User {nickname : u.nickname})-[:STUDIES]->(l) " +
+                   "with u, trophies, total, l " +
+                   "order by l.lesID " +
                    "return u as user, trophies, collect(l) as lessons, total",
                    function (err, results) {
         if (err) {
@@ -42,7 +47,7 @@ var getUsers = function (res) {
 }
 
 var getWorld = function (res) {
-    dbRemote.query("match (kp:KnowledgePoint) with distinct kp optional match (kp)-[:LEADS_TO]->(m) return kp as nodes, collect(m) as leadsTo",
+    dbRemote.query("match (kp:KnowledgePoint) with distinct kp optional match (kp)-[:LEADS_TO]->(m) return kp.lesson as lesson, kp.name as name, collect(m) as leadsTo",
         function (err, results) {
         if (err) {
             // A Neo4j exception occurred

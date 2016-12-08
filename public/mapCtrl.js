@@ -21,22 +21,18 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
     var width = 7;
 
     var data = [{
-        "nodes": {
-            "lesson": "Lesson03 - This.docx",
-            "name": "this - לימוד עצמי",
-            "id": 41
-        },
+        "lesson": "Lesson03 - This.docx",
+        "name": "this - לימוד עצמי",
+        "id": 41,
         "leadsTo": [{
             "lesson": "Lesson04 - Ctor Summary.docx",
             "name": "Ctor",
             "id": 43
         }]
     }, {
-        "nodes": {
-            "lesson": "Lesson05 - Basic Inhertiance.docx",
-            "name": "ירושה בסיסית",
-            "id": 44
-        },
+        "lesson": "Lesson05 - Basic Inhertiance.docx",
+        "name": "ירושה בסיסית",
+        "id": 44,
         "leadsTo": [{
             "lesson": "Lesson06 - Inhertiance.docx",
             "name": "ירושה - לימוד עצמי",
@@ -51,22 +47,18 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
             "id": 47
         }]
     }, {
-        "nodes": {
-            "lesson": "Lesson06 - Inhertiance.docx",
-            "name": "ירושה - שיעור פרונטלי",
-            "id": 47
-        },
+        "lesson": "Lesson06 - Inhertiance.docx",
+        "name": "ירושה - שיעור פרונטלי",
+        "id": 47,
         "leadsTo": [{
             "lesson": "Lesson07 - Design Patterns.docx",
             "name": "Design Patterns",
             "id": 48
         }]
     }, {
-        "nodes": {
-            "lesson": "Lesson01 - Mavo.docx",
-            "name": "שיעור מבוא",
-            "id": 38
-        },
+        "lesson": "Lesson01 - Mavo.docx",
+        "name": "שיעור מבוא",
+        "id": 38,
         "leadsTo": [{
             "name": "טיפוס ADT - לימוד עצמי",
             "lesson": "Lesson02 - ADT.docx",
@@ -77,22 +69,18 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
             "id": 40
         }]
     }, {
-        "nodes": {
-            "lesson": "Lesson06 - Inhertiance.docx",
-            "name": "ירושה - כיתה הפוכה",
-            "id": 46
-        },
+        "lesson": "Lesson06 - Inhertiance.docx",
+        "name": "ירושה - כיתה הפוכה",
+        "id": 46,
         "leadsTo": [{
             "lesson": "Lesson07 - Design Patterns.docx",
             "name": "Design Patterns",
             "id": 48
         }]
     }, {
-        "nodes": {
-            "name": "טיפוס ADT - שיעור פרונטלי",
-            "lesson": "Lesson02 - ADT.docx",
-            "id": 40
-        },
+        "name": "טיפוס ADT - שיעור פרונטלי",
+        "lesson": "Lesson02 - ADT.docx",
+        "id": 40,
         "leadsTo": [{
             "name": "this - MOOC",
             "lesson": "Udemy",
@@ -103,44 +91,36 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
             "id": 41
         }]
     }, {
-        "nodes": {
-            "lesson": "Lesson04 - Ctor Summary.docx",
-            "name": "Ctor",
-            "id": 43
-        },
+        "lesson": "Lesson04 - Ctor Summary.docx",
+        "name": "Ctor",
+        "id": 43,
         "leadsTo": [{
             "lesson": "Lesson05 - Basic Inhertiance.docx",
             "name": "ירושה בסיסית",
             "id": 44
         }]
     }, {
-        "nodes": {
-            "lesson": "Lesson06 - Inhertiance.docx",
-            "name": "ירושה - לימוד עצמי",
-            "id": 45
-        },
+        "lesson": "Lesson06 - Inhertiance.docx",
+        "name": "ירושה - לימוד עצמי",
+        "id": 45,
         "leadsTo": [{
             "lesson": "Lesson07 - Design Patterns.docx",
             "name": "Design Patterns",
             "id": 48
         }]
     }, {
-        "nodes": {
-            "lesson": "Lesson07 - Design Patterns.docx",
-            "name": "Design Patterns",
-            "id": 48
-        },
+        "lesson": "Lesson07 - Design Patterns.docx",
+        "name": "Design Patterns",
+        "id": 48,
         "leadsTo": [{
             "lesson": "",
             "name": "סיום מקצוע OOP",
             "id": 49
         }]
     }, {
-        "nodes": {
-            "name": "טיפוס ADT - לימוד עצמי",
-            "lesson": "Lesson02 - ADT.docx",
-            "id": 39
-        },
+        "name": "טיפוס ADT - לימוד עצמי",
+        "lesson": "Lesson02 - ADT.docx",
+        "id": 39,
         "leadsTo": [{
             "lesson": "Lesson03 - This.docx",
             "name": "this - לימוד עצמי",
@@ -151,11 +131,9 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
             "id": 42
         }]
     }, {
-        "nodes": {
-            "name": "this - MOOC",
-            "lesson": "Udemy",
-            "id": 42
-        },
+        "name": "this - MOOC",
+        "lesson": "Udemy",
+        "id": 42,
         "leadsTo": [{
             "lesson": "Lesson04 - Ctor Summary.docx",
             "name": "Ctor",
@@ -286,11 +264,16 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
         });
     })();
 
+    function buildNodeLines(lessonsLinkedList, bFade) {
+        const startNodeID = 38;
+
+    }
+
     function buildMapData() {
         var mapD = {};
         for (var count = 0; count < data.length; count++) {
             var curr = data[count];
-            mapD[curr.nodes.id] = { 'name': curr.nodes.name, 'location': places[count], 'sons': curr.leadsTo };
+            mapD[curr.id] = { 'name': curr.name, 'location': places[count], 'sons': curr.leadsTo };
         }
 
         return mapD;
