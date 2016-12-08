@@ -1,11 +1,20 @@
 app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
     $scope.users = [];
-
+    $scope.currModalUser = "";
     $http.get('/users').success(function (data) {
         $scope.users = data;
+        console.log(data);
     }).error(function (err) {
         console.log(err);
     });
+
+    $scope.setCurrModalUser = function (userNick) {
+        $scope.currModalUser = _.find($scope.users, function(user) { return user.user.nickname === userNick; });
+        // As pointed out in comments, 
+        // it is superfluous to have to manually call the modal.
+        // $('#addBookDialog').modal('show');
+    };
+
     var layer;
     var map;
 
