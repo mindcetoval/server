@@ -218,7 +218,15 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
             }
         });
 
-        var azul = new avatarIcon({"images/avatars/azul.png"});
+        var azul = new avatarIcon({ iconUrl: 'images/avatars/azul.png' });
+        var kfir = new avatarIcon({ iconUrl: 'images/avatars/kfir.png' });
+        var adir = new avatarIcon({ iconUrl: 'images/avatars/adir.png' });
+        var ofer = new avatarIcon({ iconUrl: 'images/avatars/ofer.png' });
+
+        L.marker(mapData[0].location, { icon: azul }).addTo(map).bindPopup("I`m Guy");
+        L.marker(mapData[1].location, { icon: kfir }).addTo(map).bindPopup("I`m Kfir");
+        L.marker(mapData[2].location, { icon: adir }).addTo(map).bindPopup("I`m Adir");
+        L.marker(mapData[3].location, { icon: ofer }).addTo(map).bindPopup("I`m Ofer");
 
         // Build the images on the places
         var count = 1;
