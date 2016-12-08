@@ -3,9 +3,11 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
     $scope.currModalUser = "";
     $scope.data = [];
     $scope.avatarsMarkers = [];
+    $scope.currChosenUser = null;
+
     $http.get('/users').success(function (data) {
         $scope.users = data;
-
+        
         $http.get('/world').success(function (res) {
             $scope.data = res;
             init();
@@ -18,9 +20,6 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
 
     $scope.setCurrModalUser = function (userNick) {
         $scope.currModalUser = _.find($scope.users, function (user) { return user.user.nickname === userNick; });
-        // As pointed out in comments, 
-        // it is superfluous to have to manually call the modal.
-        // $('#addBookDialog').modal('show');
     };
 
     var layer;
@@ -98,10 +97,43 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
         });
 
         $scope.users.forEach(function (curruser) {
-            $scope.avatarsMarkers.push({
-                user: curruser.user,
-                marker: L.animatedMarker([mapData[curruser.user.currLesID].location], { icon: new avatarIcon({ iconUrl: 'images/' + curruser.user.avatar }) }).addTo(map)
-            });
+            if ((curruser.user.nickname !== "gazu") && (curruser.user.nickname !== "kfirstar")) {
+                $scope.avatarsMarkers.push({
+                    user: curruser.user,
+                    marker: L.marker(mapData[curruser.user.currLesID].location,
+                                    { icon: new avatarIcon({ iconUrl: 'images/' + curruser.user.avatar }) })
+                            .on('click', function() {
+                                buildNodeLinesForUser(curruser.user, curruser.lessons);
+                            })
+                            .addTo(map)
+                });
+            } else if (curruser.user.nickname !== "kfirstar") {
+                var guyLocation = _.clone(mapData[curruser.user.currLesID].location);
+                guyLocation[1] -= 5;
+                //guyLocation[0] -= 5;
+                $scope.avatarsMarkers.push({
+                    user: curruser.user,
+                    marker: L.marker(guyLocation,
+                                    { icon: new avatarIcon({ iconUrl: 'images/' + curruser.user.avatar }) })
+                            .on('click', function() {
+                                buildNodeLinesForUser(curruser.user, curruser.lessons);
+                            })
+                            .addTo(map)
+                });
+            } else {
+                var kfirLocation = _.clone(mapData[curruser.user.currLesID].location);
+                kfirLocation[1] += 5;
+                //kfirLocation[0] -= 5;
+                $scope.avatarsMarkers.push({
+                    user: curruser.user,
+                    marker: L.marker(kfirLocation,
+                                    { icon: new avatarIcon({ iconUrl: 'images/' + curruser.user.avatar }) })
+                            .on('click', function() {
+                                buildNodeLinesForUser(curruser.user, curruser.lessons);
+                            })
+                            .addTo(map)
+                });
+            }
         });
 
         var overlays = [];
@@ -122,6 +154,7 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
 
             L.circleMarker(new L.LatLng(place[0], place[1]), circleOptions).addTo(map);
 
+
             map.addLayer(overlay);
             count++;
         });
@@ -133,7 +166,7 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
         });
 
         // build all lines between knowledge points
-        for (kpName in mapData) {
+        /*for (kpName in mapData) {
             var kp = mapData[kpName];
             var wholePolyline = [];
             var smallPolyline = [];
@@ -152,10 +185,11 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
             polyOptions.opacity -= 0.13;
             // L.marker(, { title: kp.name }).addTo(map);
             L.popup({ autoClose: false }).setLatLng([kp.location[0], kp.location[1]]).setContent(kpName + ' - ' + kp.name).openOn(map);
-            wholePolyline = [];
-        }
+            //wholePolyline = [];
+        }*/
 
         map.on('click', function (ev) {
+            clearMap();
             console.log(JSON.stringify(ev.latlng)); // ev is an event object (MouseEvent in this case)
         });
     };
@@ -177,21 +211,89 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
         $scope.avatarsMarkers[index].marker.setLine(line.getLatLngs());
     }
 
-    function buildNodeLines(lessonNodes, bFade) {
-
-    }
-
     function findNextLocation(kpId) {
         return mapData[mapData[kpId].sons[0].lesID].location;
     }
 
-    function buildLessonsLinkedList(userLessons) {
+    var currPolylines = [];
+
+    function clearMap() {
+        while (currPolylines.length) {
+            var currPoly = currPolylines.pop();
+            if (currPoly !== "END PAST STUDIES") {
+                map.removeLayer(currPoly);
+            }
+        }
+    }
+
+    function buildNodeLinesForUser(chosenUser, userLessons) {
+        $scope.currChosenUser = chosenUser;
+        var username = chosenUser.nickname;
+        clearMap();
+
+        var listNode = buildUserLessonsLinkedList(userLessons);
+        var lastNode = undefined;
+
+        while (listNode) {
+            var smallPolyline = [];
+            var wholePolyline = [];
+            if (listNode.leadsTo) {
+                smallPolyline.push(mapData[listNode.lesID].location);
+                smallPolyline.push(mapData[listNode.leadsTo.lesID].location)
+                wholePolyline.push(smallPolyline);
+                var poly = L.polyline(wholePolyline, polyOptions);
+                poly.addTo(map);
+                currPolylines.push(poly);
+            }
+            L.popup({ autoClose: false }).setLatLng([mapData[listNode.lesID].location[0],
+                                                     mapData[listNode.lesID].location[1]])
+                                         .setContent(listNode.lesID + ' - ' + listNode.name)
+                                         .openOn(map);
+            lastNode = listNode;
+            listNode = listNode.leadsTo;
+        }
+
+        if (lastNode.lesID === 12) {
+            L.popup({ autoClose: false }).setLatLng([mapData[lastNode.lesID].location[0],
+                                                     mapData[lastNode.lesID].location[1]])
+                                         .setContent(lastNode.lesID + ' - ' + lastNode.name)
+                                         .openOn(map);
+        } else {
+            currPolylines.push("END PAST STUDIES");
+            polyOptions.color = "red";
+            polyOptions.opacity -= 0.30;
+            polyOptions.weight = 7;
+            nodesToGoTo = _.clone(_.find($scope.data, function(part) { return part.lesID === lastNode.lesID; }).leadsTo);
+            for (i in nodesToGoTo) {
+                if ((username !== "kfirstar" && username !== "gazu") ||
+                    ((username === "kfirstar") && (nodesToGoTo[i].lesID !== 8)) ||
+                    ((username === "gazu") && (nodesToGoTo[i].lesID !== 10))) {
+                    var smallPolyline = [];
+                    var wholePolyline = [];
+                    smallPolyline.push(mapData[lastNode.lesID].location);
+                    smallPolyline.push(mapData[nodesToGoTo[i].lesID].location)
+                    wholePolyline.push(smallPolyline);
+                    var poly = L.polyline(wholePolyline, polyOptions);
+                    poly.addTo(map);
+                    currPolylines.push(poly);
+                    L.popup({ autoClose: false }).setLatLng([mapData[nodesToGoTo[i].lesID].location[0],
+                                                            mapData[nodesToGoTo[i].lesID].location[1]])
+                                                .setContent(nodesToGoTo[i].lesID + ' - ' + nodesToGoTo[i].name)
+                                                .openOn(map);
+                }
+            }
+            polyOptions.color = "yellow";
+            polyOptions.opacity += 0.30;
+            polyOptions.weight = 5;
+        }
+    }
+
+    function buildUserLessonsLinkedList(userLessons) {
         var node = userLessons[0];
         var firstNode = node;
 
-        debugger
         for (var i = 1; i < userLessons.length; i++) {
-            node.leadsTo = _.find($scope.data, function (part) { return part.lesID === userLessons[i].lesID; });
+            node.leadsTo = _.clone(_.find($scope.data, function (part) { return part.lesID === userLessons[i].lesID; }));
             node = node.leadsTo;
             delete node.leadsTo;
         }
