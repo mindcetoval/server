@@ -264,9 +264,16 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
         });
     })();
 
-    function buildNodeLines(lessonsLinkedList, bFade) {
-        const startNodeID = 38;
+    function buildNodeLines(lessonNodes, bFade) {
+        
+    }
 
+    function buildLessonsLinkedList(userLessons) {
+        var node = userLessons[0];
+        for (var i = 1; i < userLessons.length; i++) {
+            node.leadsTo(_.find($scope.data, function(part) { return part.lesID === userLessons[i].lesID; }));
+            node = node.leadsTo;
+        }
     }
 
     function buildMapData() {
