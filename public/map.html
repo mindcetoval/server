@@ -1,5 +1,10 @@
 <div class='map-container'>
-  <div class='pull-right' style='position: relative; z-index: 10;'>
+  <div id="videoscreen" class='pull-right' style='position: relative; z-index: 10; display: none'>
+    <video id="castleVid">
+      <source src="videos/movie.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class='pull-right' id="scores" style='position: relative; z-index: 10;'>
     <table class='table table-striped' id='points-table'>
       <thead>
         <tr>
