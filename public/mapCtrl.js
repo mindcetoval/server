@@ -180,12 +180,12 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
             if ((curruser.user.nickname !== "gazu") && (curruser.user.nickname !== "kfirstar")) {
                 $scope.avatarsMarkers.push({
                     user: curruser.user,
-                    marker: L.marker(mapData[curruser.user.currLesID].location,
-                        { icon: new avatarIcon({ iconUrl: 'images/' + curruser.user.avatar }) })
-                        .on('click', function () {
-                            buildNodeLinesForUser(curruser.user, curruser.lessons);
-                        })
-                        .addTo(map)
+                    marker: L.animatedMarker([mapData[curruser.user.currLesID].location],
+                                    { icon: new avatarIcon({ iconUrl: 'images/' + curruser.user.avatar }) })
+                            .on('click', function() {
+                                buildNodeLinesForUser(curruser.user, curruser.lessons);
+                            })
+                            .addTo(map)
                 });
             } else if (curruser.user.nickname !== "kfirstar") {
                 var guyLocation = _.clone(mapData[curruser.user.currLesID].location);
@@ -193,12 +193,12 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
                 //guyLocation[0] -= 5;
                 $scope.avatarsMarkers.push({
                     user: curruser.user,
-                    marker: L.marker(guyLocation,
-                        { icon: new avatarIcon({ iconUrl: 'images/' + curruser.user.avatar }) })
-                        .on('click', function () {
-                            buildNodeLinesForUser(curruser.user, curruser.lessons);
-                        })
-                        .addTo(map)
+                    marker: L.animatedMarker([guyLocation],
+                                    { icon: new avatarIcon({ iconUrl: 'images/' + curruser.user.avatar }) })
+                           .on('click', function() {
+                                buildNodeLinesForUser(curruser.user, curruser.lessons);
+                            })
+                            .addTo(map)
                 });
             } else {
                 var kfirLocation = _.clone(mapData[curruser.user.currLesID].location);
@@ -206,12 +206,12 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
                 //kfirLocation[0] -= 5;
                 $scope.avatarsMarkers.push({
                     user: curruser.user,
-                    marker: L.marker(kfirLocation,
-                        { icon: new avatarIcon({ iconUrl: 'images/' + curruser.user.avatar }) })
-                        .on('click', function () {
-                            buildNodeLinesForUser(curruser.user, curruser.lessons);
-                        })
-                        .addTo(map)
+                    marker: L.animatedMarker([kfirLocation],
+                                    { icon: new avatarIcon({ iconUrl: 'images/' + curruser.user.avatar }) })
+                            .on('click', function() {
+                                buildNodeLinesForUser(curruser.user, curruser.lessons);
+                            })
+                            .addTo(map)
                 });
             }
         });
@@ -230,10 +230,12 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
                 interactive: true
             });
 
+
+            L.circleMarker(new L.LatLng(place[0], place[1]), circleOptions)
+                            .on('click', function () { moveMarker(place); })
+                            .addTo(map);
+
             overlays.push(overlay);
-
-            L.circleMarker(new L.LatLng(place[0], place[1]), circleOptions).addTo(map);
-
 
             map.addLayer(overlay);
             count++;
@@ -274,12 +276,12 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
         });
     };
 
-    function moveMarker(userid) {
+    function moveMarker(place) {
         var markerToMove = null;
         var index = 0;
-
+        if ($scope.currChosenUser === null) return;
         $scope.avatarsMarkers.forEach(function (currmarker) {
-            if (currmarker.user.id == userid) {
+            if (currmarker.user.id == $scope.currChosenUser.id) {
                 markerToMove = currmarker;
             }
             else {
@@ -287,12 +289,37 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
             }
         });
 
-        var line = L.polyline([mapData[markerToMove.user.currLesID].location, findNextLocation(markerToMove.user.currLesID)]);
+        var line = findPolyline(place);
         $scope.avatarsMarkers[index].marker.setLine(line.getLatLngs());
     }
 
-    function findNextLocation(kpId) {
-        return mapData[mapData[kpId].sons[0].lesID].location;
+    function findPolyline(place) {
+        var nextPolys = [];
+        var currPoly = currPolylines.pop();
+        var selectedPoly;
+
+        while (currPoly !== "END PAST STUDIES") {
+            nextPolys.push(currPoly);
+            var currPoly = currPolylines.pop();
+        }
+
+        for (i in nextPolys) {
+            var currPolyArr = nextPolys[i].getLatLngs();
+            if ((currPolyArr[0][0].lat === place[0] && currPolyArr[0][0].lng === place[1]) ||
+                (currPolyArr[0][1].lat === place[0] && currPolyArr[0][1].lng === place[1])) {
+                selectedPoly=nextPolys[i];
+                break;
+            }
+        }
+
+        nextPolys.push(currPoly);
+        currPoly = nextPolys.pop();
+        while (currPoly) {
+            currPolylines.push(currPoly);
+            currPoly = nextPolys.pop();
+        }
+
+        if (selectedPoly !== undefined) return selectedPoly;
     }
 
     var currPolylines = [];
