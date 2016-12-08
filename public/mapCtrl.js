@@ -96,12 +96,12 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
             }
         });
 
-        var avatarsMarkers = [];    
+        var avatarsMarkers = [];
 
         $scope.users.forEach(function (curruser) {
             avatarsMarkers.push({
-                nickname: curruser.user.nickname,
-                marker: L.marker(mapData[curruser.user.currLesID].location, { icon: new avatarIcon({ iconUrl: 'images/' + curruser.user.avatar }) }).addTo(map)
+                user: curruser.user,
+                marker: L.animatedMarker([mapData[curruser.user.currLesID].location], { icon: new avatarIcon({ iconUrl: 'images/' + curruser.user.avatar }) }).addTo(map)
             });
         });
 
@@ -146,6 +146,11 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
             wholePolyline = [];
         }
 
+
+        var line = L.polyline([mapData[avatarsMarkers[0].user.currLesID].location, , findNextLocation(avatarsMarkers[0].user.currLesID)]);
+        avatarsMarkers[0] = L.animatedMarker(line.getLatLngs());
+            
+
         map.on('click', function (ev) {
             console.log(JSON.stringify(ev.latlng)); // ev is an event object (MouseEvent in this case)
         });
@@ -155,7 +160,11 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
 
     }
 
-    function buildLessonsLinkedList (userLessons) {
+    function findNextLocation(kpId) {
+        return mapData[mapData[kpId].sons[0].lesID].location;
+    }
+
+    function buildLessonsLinkedList(userLessons) {
         var node = userLessons[0];
         var firstNode = node;
 
@@ -173,7 +182,7 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
         var mapD = {};
         for (var count = 0; count < $scope.data.length; count++) {
             var curr = $scope.data[count];
-            mapD[curr.lesID] = { 'name': curr.name, 'location': places[count], 'sons': curr.leadsTo, 'lesID' : curr.lesID};
+            mapD[curr.lesID] = { 'name': curr.name, 'location': places[count], 'sons': curr.leadsTo, 'lesID': curr.lesID };
         }
 
         return mapD;
