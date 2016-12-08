@@ -1,4 +1,4 @@
-app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
+app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
     $scope.users = [];
     $scope.currModalUser = "";
     $http.get('/users').success(function (data) {
@@ -218,9 +218,27 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
             tms: false
         }).addTo(map);
 
+        var avatarIcon = L.Icon.extend({
+            options: {
+                iconSize: [50, 75],
+                iconAnchor: [22, 94],
+                popupAnchor: [-3, -76]
+            }
+        });
+
+        var azul = new avatarIcon({ iconUrl: 'images/azul.png' });
+        var kfir = new avatarIcon({ iconUrl: 'images/kfir.png' });
+        var adir = new avatarIcon({ iconUrl: 'images/adir.png' });
+        var ofer = new avatarIcon({ iconUrl: 'images/ofer.png' });
+
+        L.marker(mapData[Object.keys(mapData)[0]].location, { icon: azul }).addTo(map).bindPopup("Shalom Lah");
+        L.marker(mapData[Object.keys(mapData)[1]].location, { icon: kfir }).addTo(map).bindPopup("I`m Kfir");
+        L.marker(mapData[Object.keys(mapData)[2]].location, { icon: adir }).addTo(map).bindPopup("I`m Adir");
+        L.marker(mapData[Object.keys(mapData)[3]].location, { icon: ofer }).addTo(map).bindPopup("Leeee - Bemet ?");
+
         // Build the images on the places
         var count = 1;
-        places.forEach(function (place) {
+        places.forEach(function(place) {
             var bounds = new L.LatLngBounds(
                 new L.LatLng(place[0], place[1]),
                 new L.LatLng(place[0] - height, place[1] + width));
@@ -237,7 +255,7 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
         });
 
         // build all lines
-        for(kpName in mapData) {
+        for (kpName in mapData) {
             var kp = mapData[kpName];
             var wholePolyline = [];
             var smallPolyline = [];
@@ -255,11 +273,11 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
 
             polyOptions.opacity -= 0.13;
             // L.marker(, { title: kp.name }).addTo(map);
-            L.popup({ autoClose: false} ).setLatLng([kp.location[0], kp.location[1]]).setContent(kpName + ' - ' + kp.name).openOn(map);
+            L.popup({ autoClose: false }).setLatLng([kp.location[0], kp.location[1]]).setContent(kpName + ' - ' + kp.name).openOn(map);
             wholePolyline = [];
         }
 
-        map.on('click', function (ev) {
+        map.on('click', function(ev) {
             console.log(JSON.stringify(ev.latlng)); // ev is an event object (MouseEvent in this case)
         });
     })();
@@ -268,7 +286,7 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
         var mapD = {};
         for (var count = 0; count < data.length; count++) {
             var curr = data[count];
-            mapD[curr.nodes.id] = { 'name': curr.nodes.name, 'location' : places[count], 'sons' : curr.leadsTo };
+            mapD[curr.nodes.id] = { 'name': curr.nodes.name, 'location': places[count], 'sons': curr.leadsTo };
         }
 
         return mapD;
