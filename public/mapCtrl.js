@@ -163,6 +163,7 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
         }]
     }];
 
+    // good places to put things on the map
     var places = [
         [-26, 70.875],
         [-55.875, 4.375],
@@ -177,6 +178,7 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
         [-34.875, 49.875]
     ];
 
+    // definitions for colors and other things
     var polyOptions = {
         color: 'yellow',
         weight: 5,
@@ -195,6 +197,7 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
 
     (function init() {
 
+        // greate a map between the data from db id and content
         mapData = buildMapData();
 
         var mapMinZoom = 0;
@@ -218,6 +221,7 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
             tms: false
         }).addTo(map);
 
+        // create the avatars
         var avatarIcon = L.Icon.extend({
             options: {
                 iconSize: [50, 75],
@@ -254,7 +258,7 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
             count++;
         });
 
-        // build all lines
+        // build all lines between knowledge points
         for (kpName in mapData) {
             var kp = mapData[kpName];
             var wholePolyline = [];
