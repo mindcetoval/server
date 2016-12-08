@@ -1,9 +1,9 @@
-app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
+app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
     $scope.users = [];
 
-    $http.get('/users').success(function (data) {
+    $http.get('/users').success(function(data) {
         $scope.users = data;
-    }).error(function (err) {
+    }).error(function(err) {
         console.log(err);
     });
     var layer;
@@ -210,9 +210,19 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
             tms: false
         }).addTo(map);
 
+        var avatarIcon = L.Icon.extend({
+            options: {
+                iconSize: [38, 95],
+                iconAnchor: [22, 94],
+                popupAnchor: [-3, -76]
+            }
+        });
+
+        var azul = new avatarIcon({"images/avatars/azul.png"});
+
         // Build the images on the places
         var count = 1;
-        places.forEach(function (place) {
+        places.forEach(function(place) {
             var bounds = new L.LatLngBounds(
                 new L.LatLng(place[0], place[1]),
                 new L.LatLng(place[0] - height, place[1] + width));
@@ -229,7 +239,7 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
         });
 
         // build all lines
-        for(kpName in mapData) {
+        for (kpName in mapData) {
             var kp = mapData[kpName];
             var wholePolyline = [];
             var smallPolyline = [];
@@ -243,11 +253,11 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
 
             var polyline = L.polyline(wholePolyline, polyOptions).addTo(map);
             // L.marker(, { title: kp.name }).addTo(map);
-            L.popup({ autoClose: false} ).setLatLng([kp.location[0], kp.location[1]]).setContent(kpName + ' - ' + kp.name).openOn(map);
+            L.popup({ autoClose: false }).setLatLng([kp.location[0], kp.location[1]]).setContent(kpName + ' - ' + kp.name).openOn(map);
             wholePolyline = [];
         }
 
-        map.on('click', function (ev) {
+        map.on('click', function(ev) {
             console.log(JSON.stringify(ev.latlng)); // ev is an event object (MouseEvent in this case)
         });
     })();
@@ -256,7 +266,7 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
         var mapD = {};
         for (var count = 0; count < data.length; count++) {
             var curr = data[count];
-            mapD[curr.nodes.id] = { 'name': curr.nodes.name, 'location' : places[count], 'sons' : curr.leadsTo };
+            mapD[curr.nodes.id] = { 'name': curr.nodes.name, 'location': places[count], 'sons': curr.leadsTo };
         }
 
         return mapD;
