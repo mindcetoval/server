@@ -35,3 +35,17 @@
     max-width: 30px;
     max-height: 30px;
 }
+
+#videoscreen {
+    height: 100%;
+    width: 100%;
+    float: right!important;
+    background-color: white;
+    border: 1px solid black;
+    z-index: 11;
+}
+
+video#castleVid {
+    height: 100%;
+    width: 100%;
+}
