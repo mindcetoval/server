@@ -8,7 +8,6 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
         $http.get('/world').success(function (res) {
             $scope.data = res;
             init();
-            buildLessonsLinkedList(data[0].lessons);
         }).error(function (err) {
             console.log(err);
         });
