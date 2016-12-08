@@ -156,7 +156,6 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
     }];
 
     var places = [
-        [-36.125, 5.875],
         [-26, 70.875],
         [-55.875, 4.375],
         [-20.125, 103.375],
@@ -164,6 +163,7 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
         [-57.375, 30.25],
         [-70.875, 27.5],
         [-44, 83.875],
+        [-36.125, 5.875],
         [-65.875, 53.125],
         [-32.5, 116],
         [-34.875, 49.875]
@@ -174,7 +174,7 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
         weight: 5,
         dashArray: '5, 15',
         fill: false,
-        opacity: 0.6
+        opacity: 1.0
     };
 
     var circleOptions = {
@@ -252,6 +252,8 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
             });
 
             var polyline = L.polyline(wholePolyline, polyOptions).addTo(map);
+
+            polyOptions.opacity -= 0.13;
             // L.marker(, { title: kp.name }).addTo(map);
             L.popup({ autoClose: false }).setLatLng([kp.location[0], kp.location[1]]).setContent(kpName + ' - ' + kp.name).openOn(map);
             wholePolyline = [];
