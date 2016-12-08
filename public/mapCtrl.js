@@ -3,6 +3,7 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
     $scope.currModalUser = "";
     $http.get('/users').success(function (data) {
         $scope.users = data;
+        buildLessonsLinkedList(data[0].lessons);
     }).error(function (err) {
         console.log(err);
     });
@@ -268,14 +269,21 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
         
     }
 
-    function buildLessonsLinkedList(userLessons) {
+    function buildLessonsLinkedList (userLessons) {
         var node = userLessons[0];
         var firstNode = node;
+        debugger;
         for (var i = 1; i < userLessons.length; i++) {
             node.leadsTo = _.find($scope.data, function(part) { return part.lesID === userLessons[i].lesID; });
             node = node.leadsTo;
         }
 
+        var node = firstNode;
+        debugger;
+        while (node.leadsTo) {
+            node = node.leadsTo;
+        }
+        delete node.leadsTo;
         
         return firstNode;
     }
