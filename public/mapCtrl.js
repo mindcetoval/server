@@ -66,7 +66,7 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
             }
         }
 
-        $scope.chart.options(options);
+        $scope.chart.series[0].setData(options);
     };
 
     var layer;
@@ -127,17 +127,6 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
             series: [{
                 name: 'ofer',
                 data: [1, 0, 4]
-            }, {
-                name: 'kfirstar',
-                data: [5, 7, 3]
-            },
-            {
-                name: 'gazu',
-                data: [3, 5, 1]
-            },
-            {
-                name: 'sitonZ',
-                data: [8, 8, 2]
             }]
         });
     })();
@@ -280,13 +269,15 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
 
     function moveMarker(place) {
         var markerToMove = null;
+        var bIsDone = false;
         var index = 0;
         if ($scope.currChosenUser === null) return;
         $scope.avatarsMarkers.forEach(function (currmarker) {
             if (currmarker.user.id == $scope.currChosenUser.id) {
                 markerToMove = currmarker;
+                bIsDone = true;
             }
-            else {
+            else if(!bIsDone){
                 index++;
             }
         });
