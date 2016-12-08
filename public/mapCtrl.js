@@ -4,10 +4,11 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
     $scope.data = [];
     $scope.avatarsMarkers = [];
     $scope.currChosenUser = null;
+    $scope.chart = null;
 
     $http.get('/users').success(function (data) {
         $scope.users = data;
-        
+
         $http.get('/world').success(function (res) {
             $scope.data = res;
             init();
@@ -20,6 +21,52 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
 
     $scope.setCurrModalUser = function (userNick) {
         $scope.currModalUser = _.find($scope.users, function (user) { return user.user.nickname === userNick; });
+        var option = {};
+        switch (userNick) {
+            case 'sitonZ': {
+                options = {
+                    series: [{
+                        name: userNick,
+                        data: [1, 0, 4]
+                    }]
+                };
+                
+                break;
+            }
+
+            case 'gazu' : {
+                options = {
+                    series: [{
+                        name: userNick,
+                        data: [4, 4, 0]
+                    }]
+                };
+
+                break;
+            }
+            case 'ofer' : {
+                options = {
+                    series: [{
+                        name: userNick,
+                        data: [8, 3, 2]
+                    }]
+                };
+
+                break;
+            }
+            case 'kfirstar' : {
+                options = {
+                    series: [{
+                        name: userNick,
+                        data: [0, 2, 2]
+                    }]
+                };
+
+                break;
+            }
+        }
+
+        $scope.chart.series[0].setData(options);
     };
 
     var layer;
@@ -61,8 +108,30 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
 
     var mapData = {};
 
-    function init() {
+    (function () {
+        $scope.chart = Highcharts.chart('container', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: ''
+            },
+            xAxis: {
+                categories: ['משמעת', 'מקצועיות', 'עצמאות']
+            },
+            yAxis: {
+                title: {
+                    text: 'מספר'
+                }
+            },
+            series: [{
+                name: 'ofer',
+                data: [1, 0, 4]
+            }]
+        });
+    })();
 
+    function init() {
         // greate a map between the data from db id and content
         mapData = buildMapData();
 
@@ -135,6 +204,8 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
                 });
             }
         });
+        
+        //buildNodeLinesForUser($scope.users[1].user.nickname, $scope.users[1].lessons);
 
         var overlays = [];
 
@@ -189,7 +260,7 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
             L.popup({ autoClose: false }).setLatLng([kp.location[0], kp.location[1]]).setContent(kpName + ' - ' + kp.name).openOn(map);
             //wholePolyline = [];
         }*/
-
+        
         map.on('click', function (ev) {
             clearMap();
             console.log(JSON.stringify(ev.latlng)); // ev is an event object (MouseEvent in this case)
@@ -197,14 +268,14 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
     };
 
     function moveMarker(place) {
-        var markerToMove = null;
+        var bIsDone = false;
         var index = 0;
         if ($scope.currChosenUser === null) return;
         $scope.avatarsMarkers.forEach(function (currmarker) {
             if (currmarker.user.id == $scope.currChosenUser.id) {
-                markerToMove = currmarker;
+                bIsDone = true;
             }
-            else {
+            else if(!bIsDone){
                 index++;
             }
         });
@@ -273,24 +344,24 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
                 currPolylines.push(poly);
             }
             L.popup({ autoClose: false }).setLatLng([mapData[listNode.lesID].location[0],
-                                                     mapData[listNode.lesID].location[1]])
-                                         .setContent(listNode.lesID + ' - ' + listNode.name)
-                                         .openOn(map);
+            mapData[listNode.lesID].location[1]])
+                .setContent(listNode.lesID + ' - ' + listNode.name)
+                .openOn(map);
             lastNode = listNode;
             listNode = listNode.leadsTo;
         }
 
         if (lastNode.lesID === 12) {
             L.popup({ autoClose: false }).setLatLng([mapData[lastNode.lesID].location[0],
-                                                     mapData[lastNode.lesID].location[1]])
-                                         .setContent(lastNode.lesID + ' - ' + lastNode.name)
-                                         .openOn(map);
+            mapData[lastNode.lesID].location[1]])
+                .setContent(lastNode.lesID + ' - ' + lastNode.name)
+                .openOn(map);
         } else {
             currPolylines.push("END PAST STUDIES");
             polyOptions.color = "red";
             polyOptions.opacity -= 0.30;
             polyOptions.weight = 7;
-            nodesToGoTo = _.clone(_.find($scope.data, function(part) { return part.lesID === lastNode.lesID; }).leadsTo);
+            nodesToGoTo = _.clone(_.find($scope.data, function (part) { return part.lesID === lastNode.lesID; }).leadsTo);
             for (i in nodesToGoTo) {
                 if ((username !== "kfirstar" && username !== "gazu") ||
                     ((username === "kfirstar") && (nodesToGoTo[i].lesID !== 8)) ||
@@ -304,9 +375,9 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
                     poly.addTo(map);
                     currPolylines.push(poly);
                     L.popup({ autoClose: false }).setLatLng([mapData[nodesToGoTo[i].lesID].location[0],
-                                                            mapData[nodesToGoTo[i].lesID].location[1]])
-                                                .setContent(nodesToGoTo[i].lesID + ' - ' + nodesToGoTo[i].name)
-                                                .openOn(map);
+                    mapData[nodesToGoTo[i].lesID].location[1]])
+                        .setContent(nodesToGoTo[i].lesID + ' - ' + nodesToGoTo[i].name)
+                        .openOn(map);
                 }
             }
             polyOptions.color = "yellow";
