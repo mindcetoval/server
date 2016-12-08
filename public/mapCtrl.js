@@ -3,7 +3,6 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
     $scope.currModalUser = "";
     $http.get('/users').success(function (data) {
         $scope.users = data;
-        console.log(data);
     }).error(function (err) {
         console.log(err);
     });
@@ -244,10 +243,12 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
             var smallPolyline = [];
 
             kp.sons.forEach(function(son) {
-                smallPolyline.push(kp.location);
-                smallPolyline.push(mapData[son.id].location);
-                wholePolyline.push(smallPolyline);
-                smallPolyline = [];
+                if (mapData[son.id]) {
+                    smallPolyline.push(kp.location);
+                    smallPolyline.push(mapData[son.id].location);
+                    wholePolyline.push(smallPolyline);
+                    smallPolyline = [];
+                }
             });
 
             var polyline = L.polyline(wholePolyline, polyOptions).addTo(map);
