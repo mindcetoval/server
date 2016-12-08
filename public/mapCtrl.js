@@ -1,11 +1,19 @@
 app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
     $scope.users = [];
-
-    $http.get('/users').success(function(data) {
+    $scope.currModalUser = "";
+    $http.get('/users').success(function (data) {
         $scope.users = data;
-    }).error(function(err) {
+    }).error(function (err) {
         console.log(err);
     });
+
+    $scope.setCurrModalUser = function (userNick) {
+        $scope.currModalUser = _.find($scope.users, function(user) { return user.user.nickname === userNick; });
+        // As pointed out in comments, 
+        // it is superfluous to have to manually call the modal.
+        // $('#addBookDialog').modal('show');
+    };
+
     var layer;
     var map;
 
@@ -212,21 +220,21 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
 
         var avatarIcon = L.Icon.extend({
             options: {
-                iconSize: [38, 95],
+                iconSize: [50, 75],
                 iconAnchor: [22, 94],
                 popupAnchor: [-3, -76]
             }
         });
 
-        var azul = new avatarIcon({ iconUrl: 'images/avatars/azul.png' });
-        var kfir = new avatarIcon({ iconUrl: 'images/avatars/kfir.png' });
-        var adir = new avatarIcon({ iconUrl: 'images/avatars/adir.png' });
-        var ofer = new avatarIcon({ iconUrl: 'images/avatars/ofer.png' });
+        var azul = new avatarIcon({ iconUrl: 'images/azul.png' });
+        var kfir = new avatarIcon({ iconUrl: 'images/kfir.png' });
+        var adir = new avatarIcon({ iconUrl: 'images/adir.png' });
+        var ofer = new avatarIcon({ iconUrl: 'images/ofer.png' });
 
-        L.marker(mapData[0].location, { icon: azul }).addTo(map).bindPopup("I`m Guy");
-        L.marker(mapData[1].location, { icon: kfir }).addTo(map).bindPopup("I`m Kfir");
-        L.marker(mapData[2].location, { icon: adir }).addTo(map).bindPopup("I`m Adir");
-        L.marker(mapData[3].location, { icon: ofer }).addTo(map).bindPopup("I`m Ofer");
+        L.marker(mapData[Object.keys(mapData)[0]].location, { icon: azul }).addTo(map).bindPopup("Shalom Lah");
+        L.marker(mapData[Object.keys(mapData)[1]].location, { icon: kfir }).addTo(map).bindPopup("I`m Kfir");
+        L.marker(mapData[Object.keys(mapData)[2]].location, { icon: adir }).addTo(map).bindPopup("I`m Adir");
+        L.marker(mapData[Object.keys(mapData)[3]].location, { icon: ofer }).addTo(map).bindPopup("Leeee - Bemet ?");
 
         // Build the images on the places
         var count = 1;
