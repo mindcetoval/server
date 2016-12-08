@@ -34,10 +34,10 @@ app.controller('introCtrl', ['$scope', function ($scope) {
 
     function playAnimtion(event) {
         animation.gotoAndPlay(2);
-        setTimeout(enterMap, 900);
+        setTimeout(enterMap, 700);
     }
 
     function enterMap() {
-        alert("end");
+        document.location = '#/map';
     }
 }]);
