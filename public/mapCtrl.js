@@ -261,13 +261,11 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
     };
 
     function moveMarker(place) {
-        var markerToMove = null;
         var bIsDone = false;
         var index = 0;
         if ($scope.currChosenUser === null) return;
         $scope.avatarsMarkers.forEach(function (currmarker) {
             if (currmarker.user.id == $scope.currChosenUser.id) {
-                markerToMove = currmarker;
                 bIsDone = true;
             }
             else if (!bIsDone) {

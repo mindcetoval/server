@@ -40,7 +40,7 @@
     height: 100%;
     width: 100%;
     float: right!important;
-    background-color: white;
+    background-color: black;
     border: 1px solid black;
     z-index: 11;
 }
