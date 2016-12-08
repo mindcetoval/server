@@ -4,6 +4,7 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
     $scope.data = [];
     $http.get('/users').success(function (data) {
         $scope.users = data;
+<<<<<<< HEAD
 
         $http.get('/world').success(function(res) {
             $scope.data = res;
@@ -12,6 +13,8 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
         }).error(function(err) {
             console.log(err);
         });
+=======
+>>>>>>> f13a436065cd6ab5f30b6d8faea39077dc8f3a04
     }).error(function (err) {
         console.log(err);
     });
@@ -182,7 +185,7 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
 
     var mapData = {};
 
-    function init() {
+    (function init() {
 
         // greate a map between the data from db id and content
         mapData = buildMapData();
@@ -217,14 +220,24 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
             }
         });
 
-        var avatarsMarkers = []
+        var azul = new avatarIcon({ iconUrl: 'images/azul.png' });
+        var kfir = new avatarIcon({ iconUrl: 'images/kfir.png' });
+        var adir = new avatarIcon({ iconUrl: 'images/adir.png' });
+        var ofer = new avatarIcon({ iconUrl: 'images/ofer.png' });
 
+<<<<<<< HEAD
         $scope.users.forEach(function(curruser) {
             avatarsMarkers.push({
                 nickname: curruser.user.nickname,
                 marker: L.marker(mapData[curruser.user.currLesID].location, { icon: new avatarIcon({ iconUrl: 'images/' + curruser.user.avatar })}).addTo(map)
             });
         });
+=======
+        L.marker(mapData[Object.keys(mapData)[0]].location, { icon: azul }).addTo(map).bindPopup("Shalom Lah");
+        L.marker(mapData[Object.keys(mapData)[1]].location, { icon: kfir }).addTo(map).bindPopup("I`m Kfir");
+        L.marker(mapData[Object.keys(mapData)[2]].location, { icon: adir }).addTo(map).bindPopup("I`m Adir");
+        L.marker(mapData[Object.keys(mapData)[3]].location, { icon: ofer }).addTo(map).bindPopup("Leeee - Bemet ?");
+>>>>>>> f13a436065cd6ab5f30b6d8faea39077dc8f3a04
 
         // Build the images on the places
         var count = 1;
@@ -270,18 +283,35 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
         map.on('click', function(ev) {
             console.log(JSON.stringify(ev.latlng)); // ev is an event object (MouseEvent in this case)
         });
-    };
+    })();
 
-    function buildNodeLines(lessonsLinkedList, bFade) {
-        const startNodeID = 38;
+    function buildNodeLines(lessonNodes, bFade) {
+        
+    }
 
+    function buildLessonsLinkedList(userLessons) {
+        var node = userLessons[0];
+        var firstNode = node;
+        for (var i = 1; i < userLessons.length; i++) {
+            node.leadsTo = _.find($scope.data, function(part) { return part.lesID === userLessons[i].lesID; });
+            node = node.leadsTo;
+        }
+
+        
+        return firstNode;
     }
 
     function buildMapData() {
         var mapD = {};
+<<<<<<< HEAD
         for (var count = 0; count < $scope.data.length; count++) {
             var curr = $scope.data[count];
             mapD[curr.lesID] = { 'name': curr.name, 'location': places[count], 'sons': curr.leadsTo };
+=======
+        for (var count = 0; count < data.length; count++) {
+            var curr = data[count];
+            mapD[curr.id] = { 'name': curr.name, 'location': places[count], 'sons': curr.leadsTo };
+>>>>>>> f13a436065cd6ab5f30b6d8faea39077dc8f3a04
         }
 
         return mapD;

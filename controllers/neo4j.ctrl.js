@@ -47,7 +47,7 @@ var getUsers = function (res) {
 }
 
 var getWorld = function (res) {
-    dbRemote.query("match (kp:KnowledgePoint) with distinct kp optional match (kp)-[:LEADS_TO]->(m) return kp.lesson as lesson, kp.name as name, collect(m) as leadsTo",
+    dbRemote.query("match (kp:KnowledgePoint) with distinct kp optional match (kp)-[:LEADS_TO]->(m) with kp, m order by m.lesID return kp.lesID as lesID, kp.lesson as lesson, kp.name as name, collect(m) as leadsTo order by kp.lesID",
         function (err, results) {
         if (err) {
             // A Neo4j exception occurred
