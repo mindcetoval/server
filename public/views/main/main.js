@@ -1,48 +1,87 @@
 app.controller('introCtrl', ['$scope', function ($scope) {
     var stage;
-
-    // document.addEventListener("DOMContentLoaded", function () {
-        console.log(document.getElementById("myCanvas"));
-        stage = new createjs.Stage("myCanvas");
-        var world = new Image();
-        world.src = "images/movWorldsmall.png"
-        var bitmapWorld = new createjs.Bitmap(world);
-        stage.addChild(bitmapWorld);
-
-
-        var theZone = new Image();
-        theZone.src = "images/movZoomZonesmall.png"
-        var bitmapZone = new createjs.Bitmap(theZone);
-        bitmapZone.x += 20;
-        bitmapZone.y = 100;
-        bitmapZone.addEventListener("mouseover", dropsShadow)
-            // bitmap.scaleX = 0.2;
-            //bitmap.scaleY = 0.2;
-        stage.addChild(bitmapZone);
-
-        // bitmap.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+    var bitmapWorld;
+    var bitmapZone;
+    var myInterval;
+    var counterForInterval = 0;
+    console.log(document.getElementById("myCanvas"));
+    stage = new createjs.Stage("myCanvas");
+    var world = new Image();
+    world.src = "images/movWorldsmall.png"
+    bitmapWorld = new createjs.Bitmap(world);
+    bitmapWorld.x = 500;
+    stage.addChild(bitmapWorld);
 
 
+    var theZone = new Image();
+    theZone.src = "images/movZoomZonesmall.png"
+    bitmapZone = new createjs.Bitmap(theZone);
+    bitmapZone.x = 520;
+    bitmapZone.y = 100;
+    bitmapZone.addEventListener("click", dropsShadow)
+        // bitmap.scaleX = 0.2;
+        //bitmap.scaleY = 0.2;
+    stage.addChild(bitmapZone);
 
+    // bitmap.shadow = new createjs.Shadow("#000000", 5, 5, 10);
 
+    /* var stage = new createjs.Stage(document.getElementById("myCanvas"));
+     var image = new createjs.Bitmap("images/movWorld.png");
+     stage.addChild(image);
+     image.x=100;
+     image.y=100;
+     
+     //createjs.Ticker.addEventListener("tick", handleTick);
+     stage.update();*/
+    createjs.Ticker.addEventListener("tick", stage);
 
-        createjs.Ticker.addEventListener("tick", stage);
-
-        /* var stage = new createjs.Stage(document.getElementById("myCanvas"));
-         var image = new createjs.Bitmap("images/movWorld.png");
-         stage.addChild(image);
-         image.x=100;
-         image.y=100;
-         
-         //createjs.Ticker.addEventListener("tick", handleTick);
-         stage.update();*/
-
-    // });
 
     function dropsShadow(event) {
-        console.log("hey");
-        console.log(event.currentTarget);
-        event.currentTarget.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+        myInterval = setInterval(zoomWorld, 100)
+            // event.currentTarget.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+    }
+
+    function dropsShadow(event) {
+        myInterval = setInterval(zoomWorld, 100)
+            // event.currentTarget.shadow = new createjs.Shadow("#000000", 5, 5, 10);
+    }
+
+    function zoomWorld() {
+        if (counterForInterval == 2) //**when the animation is ending.**
+        {
+            clearInterval(myInterval);
+            document.location='#/map';
+
+        }
+        if (counterForInterval < 3) {
+            bitmapZone.x -= 50;
+            bitmapZone.y -= 50;
+            //bitmapWorld.y-=100;
+            //bitmapWorld.x-=100;
+        } else {
+
+            bitmapZone.x -= 100;
+            bitmapZone.y -= 100;
+            //bitmapWorld.x-=640;
+            //bitmapWorld.y-=640;
+        }
+
+        counterForInterval++;
+        //bitmapWorld.x-=20;
+
+        /*console.log(document.getElementById("myCanvas"));
+        console.log(document.getElementById("myCanvas").x);
+        document.getElementById("myCanvas").style.marginLeft-=40;
+        //document.getElementById("myCanvas").y-=40;*/
+        bitmapZone.scaleX *= 1.6;
+        bitmapZone.scaleY *= 1.6;
+
+        //bitmapWorld.scaleY-=1;
+        //bitmapWorld.scaleX*=2.1;
+        // bitmapWorld.scaleY*=2.1;
+        //bitmapWorld.scaleX*=1.2;
+        //bitmapWorld.scaleY*=1.2;
+        //document.getElementById("myCanvas").className="circleCanvas";
     }
 
     function tick(event) {

@@ -8,10 +8,10 @@
           <th>נקודות</th>
         </tr>
       </thead>
-      <tr ng-repeat='user in users'>
+      <tr ng-repeat="user in users | orderBy: '-total'">
         <td>{{$index + 1}}</td>
         <td>{{user.user.nickname}}</td>
-        <td>{{user.trophies.length}}</td>
+        <td>{{user.total}}</td>
       </tr>
     </table>
   </div>
