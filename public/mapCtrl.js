@@ -218,6 +218,8 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
         
         //buildNodeLinesForUser($scope.users[1].user.nickname, $scope.users[1].lessons);
 
+        var overlays = [];
+
         // Build the images on the places
         var count = 1;
         places.forEach(function (place) {
