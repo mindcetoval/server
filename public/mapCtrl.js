@@ -21,52 +21,43 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
 
     $scope.setCurrModalUser = function (userNick) {
         $scope.currModalUser = _.find($scope.users, function (user) { return user.user.nickname === userNick; });
-        var option = {};
         switch (userNick) {
             case 'sitonZ': {
-                options = {
-                    series: [{
-                        name: userNick,
-                        data: [1, 0, 4]
-                    }]
-                };
-                
-                break;
-            }
-
-            case 'gazu' : {
-                options = {
-                    series: [{
-                        name: userNick,
-                        data: [4, 4, 0]
-                    }]
-                };
+                chartdata.series = [{
+                    name: userNick,
+                    data: [1, 0, 4]
+                }]
 
                 break;
             }
-            case 'ofer' : {
-                options = {
-                    series: [{
-                        name: userNick,
-                        data: [8, 3, 2]
-                    }]
-                };
+
+            case 'gazu': {
+                chartdata.series = [{
+                    name: userNick,
+                    data: [3, 8, 1]
+                }]
 
                 break;
             }
-            case 'kfirstar' : {
-                options = {
-                    series: [{
-                        name: userNick,
-                        data: [0, 2, 2]
-                    }]
-                };
+            case 'ofer': {
+                chartdata.series = [{
+                    name: userNick,
+                    data: [5, 4, 3]
+                }]
+
+                break;
+            }
+            case 'kfirstar': {
+                chartdata.series = [{
+                    name: userNick,
+                    data: [8, 8, 1]
+                }]
 
                 break;
             }
         }
 
-        $scope.chart.series[0].setData(options);
+        $scope.chart.update(chartdata);
     };
 
     var layer;
@@ -108,27 +99,29 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
 
     var mapData = {};
 
-    (function () {
-        $scope.chart = Highcharts.chart('container', {
-            chart: {
-                type: 'column'
-            },
+    var chartdata = {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: ''
+        },
+        xAxis: {
+            categories: ['משמעת', 'מקצועיות', 'עצמאות']
+        },
+        yAxis: {
             title: {
-                text: ''
-            },
-            xAxis: {
-                categories: ['משמעת', 'מקצועיות', 'עצמאות']
-            },
-            yAxis: {
-                title: {
-                    text: 'מספר'
-                }
-            },
-            series: [{
-                name: 'ofer',
-                data: [1, 0, 4]
-            }]
-        });
+                text: 'מספר'
+            }
+        },
+        series: [{
+            name: 'ofer',
+            data: [1, 0, 4]
+        }]
+    };
+
+    (function () {
+        $scope.chart = Highcharts.chart('container', chartdata)
     })();
 
     function init() {
@@ -170,11 +163,11 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
                 $scope.avatarsMarkers.push({
                     user: curruser.user,
                     marker: L.animatedMarker([mapData[curruser.user.currLesID].location],
-                                    { icon: new avatarIcon({ iconUrl: 'images/' + curruser.user.avatar }) })
-                            .on('click', function() {
-                                buildNodeLinesForUser(curruser.user, curruser.lessons);
-                            })
-                            .addTo(map)
+                        { icon: new avatarIcon({ iconUrl: 'images/' + curruser.user.avatar }) })
+                        .on('click', function () {
+                            buildNodeLinesForUser(curruser.user, curruser.lessons);
+                        })
+                        .addTo(map)
                 });
             } else if (curruser.user.nickname !== "kfirstar") {
                 var guyLocation = _.clone(mapData[curruser.user.currLesID].location);
@@ -183,11 +176,11 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
                 $scope.avatarsMarkers.push({
                     user: curruser.user,
                     marker: L.animatedMarker([guyLocation],
-                                    { icon: new avatarIcon({ iconUrl: 'images/' + curruser.user.avatar }) })
-                           .on('click', function() {
-                                buildNodeLinesForUser(curruser.user, curruser.lessons);
-                            })
-                            .addTo(map)
+                        { icon: new avatarIcon({ iconUrl: 'images/' + curruser.user.avatar }) })
+                        .on('click', function () {
+                            buildNodeLinesForUser(curruser.user, curruser.lessons);
+                        })
+                        .addTo(map)
                 });
             } else {
                 var kfirLocation = _.clone(mapData[curruser.user.currLesID].location);
@@ -196,15 +189,15 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
                 $scope.avatarsMarkers.push({
                     user: curruser.user,
                     marker: L.animatedMarker([kfirLocation],
-                                    { icon: new avatarIcon({ iconUrl: 'images/' + curruser.user.avatar }) })
-                            .on('click', function() {
-                                buildNodeLinesForUser(curruser.user, curruser.lessons);
-                            })
-                            .addTo(map)
+                        { icon: new avatarIcon({ iconUrl: 'images/' + curruser.user.avatar }) })
+                        .on('click', function () {
+                            buildNodeLinesForUser(curruser.user, curruser.lessons);
+                        })
+                        .addTo(map)
                 });
             }
         });
-        
+
         //buildNodeLinesForUser($scope.users[1].user.nickname, $scope.users[1].lessons);
 
         var overlays = [];
@@ -223,8 +216,8 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
 
 
             L.circleMarker(new L.LatLng(place[0], place[1]), circleOptions)
-                            .on('click', function () { moveMarker(place); })
-                            .addTo(map);
+                .on('click', function () { moveMarker(place); })
+                .addTo(map);
 
             overlays.push(overlay);
 
@@ -233,7 +226,7 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
         });
 
         // make the first castle play the movie;
-        overlays[0].on('click', function() {
+        overlays[0].on('click', function () {
             console.log('clicked first');
             showVideo();
         });
@@ -243,7 +236,7 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
             var kp = mapData[kpName];
             var wholePolyline = [];
             var smallPolyline = [];
-
+     
             kp.sons.forEach(function (son) {
                 if (mapData[son.lesID]) {
                     smallPolyline.push(kp.location);
@@ -252,15 +245,15 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
                     smallPolyline = [];
                 }
             });
-
+     
             var polyline = L.polyline(wholePolyline, polyOptions).addTo(map);
-
+     
             polyOptions.opacity -= 0.13;
             // L.marker(, { title: kp.name }).addTo(map);
             L.popup({ autoClose: false }).setLatLng([kp.location[0], kp.location[1]]).setContent(kpName + ' - ' + kp.name).openOn(map);
             //wholePolyline = [];
         }*/
-        
+
         map.on('click', function (ev) {
             clearMap();
             console.log(JSON.stringify(ev.latlng)); // ev is an event object (MouseEvent in this case)
@@ -277,7 +270,7 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
                 markerToMove = currmarker;
                 bIsDone = true;
             }
-            else if(!bIsDone){
+            else if (!bIsDone) {
                 index++;
             }
         });
@@ -300,7 +293,7 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
             var currPolyArr = nextPolys[i].getLatLngs();
             if ((currPolyArr[0][0].lat === place[0] && currPolyArr[0][0].lng === place[1]) ||
                 (currPolyArr[0][1].lat === place[0] && currPolyArr[0][1].lng === place[1])) {
-                selectedPoly=nextPolys[i];
+                selectedPoly = nextPolys[i];
                 break;
             }
         }
@@ -421,7 +414,7 @@ function showVideo() {
     scores.style.display = "none";
     screen.style.display = "block";
 
-    vid.onended = function() {
+    vid.onended = function () {
         scores.style.display = "block";
         screen.style.display = "none";
     };
