@@ -145,8 +145,6 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
             wholePolyline = [];
         }
 
-        moveMarker(93);
-
         map.on('click', function (ev) {
             console.log(JSON.stringify(ev.latlng)); // ev is an event object (MouseEvent in this case)
         });
