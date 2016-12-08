@@ -62,8 +62,11 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
 
     var mapData = {};
 
-    function init() {
+    var chart: {
+        type: 'line'
+    }
 
+    function init() {
         // greate a map between the data from db id and content
         mapData = buildMapData();
 
