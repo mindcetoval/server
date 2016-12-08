@@ -26,8 +26,12 @@
           <h4 class="modal-title pull-right" id="myModalLabel">מעט פרטי משתמש - {{ currModalUser.user.nickname }}</h4>
         </div>
         <div class="modal-body text-center">
-          <img src="https://pbs.twimg.com/profile_images/755150723206098944/o9pYEz6q.jpg" />
+          <img src="/images/{{currModalUser.user.bigAvatar}}" />
           <h2>{{ currModalUser.user.nickname }}</h2>
+          <div ng-repeat="trophy in currModalUser.trophies">
+              <img src="/images/{{trophy.pic}}"/>
+              <span>{{trophy.title}}</span>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">סגור</button>
