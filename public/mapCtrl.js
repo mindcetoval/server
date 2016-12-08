@@ -284,7 +284,7 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
         if ($scope.currChosenUser === null) return;
         $scope.avatarsMarkers.forEach(function (currmarker) {
             if (currmarker.user.id == $scope.currChosenUser.id) {
-                markerToMove = currmarker;
+                markerToMove = currmarker.marker;
             }
             else {
                 index++;
@@ -292,7 +292,7 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
         });
 
         var line = findPolyline(place);
-        $scope.avatarsMarkers[index].marker.setLine(line.getLatLngs());
+        markerToMove.setLine(line.getLatLngs());
     }
 
     function findPolyline(place) {
