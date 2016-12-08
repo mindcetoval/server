@@ -3,6 +3,7 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
     $scope.currModalUser = "";
     $http.get('/users').success(function (data) {
         $scope.users = data;
+        init();
     }).error(function (err) {
         console.log(err);
     });
@@ -173,7 +174,7 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
 
     var mapData = {};
 
-    (function init() {
+    function init() {
 
         // greate a map between the data from db id and content
         mapData = buildMapData();
@@ -210,10 +211,10 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
 
         var avatarsMarkers = []
 
-        $scop.users.foreach(function(curruser) {
+        $scope.users.forEach(function(curruser) {
             avatarsMarkers.push({
                 name : curruser.user.nickname,
-                marker : L.marker(mapData[curruser.user.lesid].location, { icon:  avatarIcon({ iconUrl: curruser.user.avatar })}).addTo(map)
+                marker : L.marker(mapData[curruser.user.lesid].location, { icon: new avatarIcon({ iconUrl: 'images/' + curruser.user.avatar })}).addTo(map)
             });
         });
 
@@ -261,7 +262,7 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
         map.on('click', function(ev) {
             console.log(JSON.stringify(ev.latlng)); // ev is an event object (MouseEvent in this case)
         });
-    })();
+    };
 
     function buildNodeLines(lessonsLinkedList, bFade) {
         const startNodeID = 38;
