@@ -1,11 +1,19 @@
 app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
     $scope.users = [];
-
+    $scope.currModalUser = "";
     $http.get('/users').success(function (data) {
         $scope.users = data;
     }).error(function (err) {
         console.log(err);
     });
+
+    $scope.setCurrModalUser = function (userNick) {
+        $scope.currModalUser = _.find($scope.users, function(user) { return user.user.nickname === userNick; });
+        // As pointed out in comments, 
+        // it is superfluous to have to manually call the modal.
+        // $('#addBookDialog').modal('show');
+    };
+
     var layer;
     var map;
 
@@ -235,10 +243,12 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
             var smallPolyline = [];
 
             kp.sons.forEach(function(son) {
-                smallPolyline.push(kp.location);
-                smallPolyline.push(mapData[son.id].location);
-                wholePolyline.push(smallPolyline);
-                smallPolyline = [];
+                if (mapData[son.id]) {
+                    smallPolyline.push(kp.location);
+                    smallPolyline.push(mapData[son.id].location);
+                    wholePolyline.push(smallPolyline);
+                    smallPolyline = [];
+                }
             });
 
             var polyline = L.polyline(wholePolyline, polyOptions).addTo(map);

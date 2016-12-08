@@ -8,7 +8,8 @@
           <th>נקודות</th>
         </tr>
       </thead>
-      <tr ng-repeat="user in users | orderBy: '-total'">
+      <tr ng-repeat="user in users | orderBy: '-total'" ng-click="setCurrModalUser(user.user.nickname)" data-toggle="modal"
+        data-target="#userModal">
         <td>{{$index + 1}}</td>
         <td>{{user.user.nickname}}</td>
         <td>{{user.total}}</td>
@@ -16,4 +17,26 @@
     </table>
   </div>
   <div id="map"></div>
+  <!-- Modal -->
+  <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close pull-left" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><b>&times;</b></span></button>
+          <h4 class="modal-title pull-right" id="myModalLabel">מעט פרטי משתמש - {{ currModalUser.user.nickname }}</h4>
+        </div>
+        <div class="modal-body text-center">
+          <img src="/images/{{currModalUser.user.bigAvatar}}" />
+          <h2>{{ currModalUser.user.nickname }}</h2>
+          <div ng-repeat="trophy in currModalUser.trophies">
+              <img src="/images/{{trophy.pic}}"/>
+              <span>{{trophy.title}}</span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">סגור</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

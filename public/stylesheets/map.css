@@ -19,3 +19,13 @@
     z-index: 1;
     position: absolute;
 }
+
+.modal-body > img {
+    max-width: 200px;
+    max-height: 200px;
+}
+
+.modal-body > div > img {
+    max-width: 30px;
+    max-height: 30px;
+}
