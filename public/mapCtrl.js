@@ -263,7 +263,7 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
         
         map.on('click', function (ev) {
             clearMap();
-            console.log(JSON.stringify(ev.latlng)); // ev is an event object (MouseEvent in this case)
+            //console.log(JSON.stringify(ev.latlng)); // ev is an event object (MouseEvent in this case)
         });
     };
 
