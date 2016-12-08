@@ -21,126 +21,187 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
     var height = 7;
     var width = 7;
 
-    var data = [{
-        "lesson": "Lesson03 - This.docx",
-        "name": "this - לימוד עצמי",
-        "id": 41,
-        "leadsTo": [{
-            "lesson": "Lesson04 - Ctor Summary.docx",
-            "name": "Ctor",
-            "id": 43
-        }]
-    }, {
-        "lesson": "Lesson05 - Basic Inhertiance.docx",
-        "name": "ירושה בסיסית",
-        "id": 44,
-        "leadsTo": [{
-            "lesson": "Lesson06 - Inhertiance.docx",
-            "name": "ירושה - לימוד עצמי",
-            "id": 45
-        }, {
-            "lesson": "Lesson06 - Inhertiance.docx",
-            "name": "ירושה - כיתה הפוכה",
-            "id": 46
-        }, {
-            "lesson": "Lesson06 - Inhertiance.docx",
-            "name": "ירושה - שיעור פרונטלי",
-            "id": 47
-        }]
-    }, {
-        "lesson": "Lesson06 - Inhertiance.docx",
-        "name": "ירושה - שיעור פרונטלי",
-        "id": 47,
-        "leadsTo": [{
-            "lesson": "Lesson07 - Design Patterns.docx",
-            "name": "Design Patterns",
-            "id": 48
-        }]
-    }, {
-        "lesson": "Lesson01 - Mavo.docx",
-        "name": "שיעור מבוא",
-        "id": 38,
-        "leadsTo": [{
-            "name": "טיפוס ADT - לימוד עצמי",
-            "lesson": "Lesson02 - ADT.docx",
-            "id": 39
-        }, {
-            "name": "טיפוס ADT - שיעור פרונטלי",
-            "lesson": "Lesson02 - ADT.docx",
-            "id": 40
-        }]
-    }, {
-        "lesson": "Lesson06 - Inhertiance.docx",
-        "name": "ירושה - כיתה הפוכה",
-        "id": 46,
-        "leadsTo": [{
-            "lesson": "Lesson07 - Design Patterns.docx",
-            "name": "Design Patterns",
-            "id": 48
-        }]
-    }, {
-        "name": "טיפוס ADT - שיעור פרונטלי",
-        "lesson": "Lesson02 - ADT.docx",
-        "id": 40,
-        "leadsTo": [{
-            "name": "this - MOOC",
-            "lesson": "Udemy",
-            "id": 42
-        }, {
-            "lesson": "Lesson03 - This.docx",
-            "name": "this - לימוד עצמי",
-            "id": 41
-        }]
-    }, {
-        "lesson": "Lesson04 - Ctor Summary.docx",
-        "name": "Ctor",
-        "id": 43,
-        "leadsTo": [{
-            "lesson": "Lesson05 - Basic Inhertiance.docx",
-            "name": "ירושה בסיסית",
-            "id": 44
-        }]
-    }, {
-        "lesson": "Lesson06 - Inhertiance.docx",
-        "name": "ירושה - לימוד עצמי",
-        "id": 45,
-        "leadsTo": [{
-            "lesson": "Lesson07 - Design Patterns.docx",
-            "name": "Design Patterns",
-            "id": 48
-        }]
-    }, {
-        "lesson": "Lesson07 - Design Patterns.docx",
-        "name": "Design Patterns",
-        "id": 48,
-        "leadsTo": [{
-            "lesson": "",
-            "name": "סיום מקצוע OOP",
-            "id": 49
-        }]
-    }, {
-        "name": "טיפוס ADT - לימוד עצמי",
-        "lesson": "Lesson02 - ADT.docx",
-        "id": 39,
-        "leadsTo": [{
-            "lesson": "Lesson03 - This.docx",
-            "name": "this - לימוד עצמי",
-            "id": 41
-        }, {
-            "name": "this - MOOC",
-            "lesson": "Udemy",
-            "id": 42
-        }]
-    }, {
-        "name": "this - MOOC",
-        "lesson": "Udemy",
-        "id": 42,
-        "leadsTo": [{
-            "lesson": "Lesson04 - Ctor Summary.docx",
-            "name": "Ctor",
-            "id": 43
-        }]
-    }];
+    var data = [
+    {
+    lesID: 1,
+    lesson: "Lesson01 - Mavo.docx",
+    name: "שיעור מבוא",
+    leadsTo: [
+    {
+    lesID: 2,
+    name: "טיפוס ADT - לימוד עצמי",
+    lesson: "Lesson02 - ADT.docx",
+    id: 77
+    },
+    {
+    lesID: 3,
+    name: "טיפוס ADT - שיעור פרונטלי",
+    lesson: "Lesson02 - ADT.docx",
+    id: 78
+    }
+    ]
+    },
+    {
+    lesID: 2,
+    lesson: "Lesson02 - ADT.docx",
+    name: "טיפוס ADT - לימוד עצמי",
+    leadsTo: [
+    {
+    lesID: 4,
+    lesson: "Lesson03 - This.docx",
+    name: "this - לימוד עצמי",
+    id: 79
+    },
+    {
+    lesID: 5,
+    name: "this - MOOC",
+    lesson: "Udemy",
+    id: 80
+    }
+    ]
+    },
+    {
+    lesID: 3,
+    lesson: "Lesson02 - ADT.docx",
+    name: "טיפוס ADT - שיעור פרונטלי",
+    leadsTo: [
+    {
+    lesID: 4,
+    lesson: "Lesson03 - This.docx",
+    name: "this - לימוד עצמי",
+    id: 79
+    },
+    {
+    lesID: 5,
+    name: "this - MOOC",
+    lesson: "Udemy",
+    id: 80
+    }
+    ]
+    },
+    {
+    lesID: 4,
+    lesson: "Lesson03 - This.docx",
+    name: "this - לימוד עצמי",
+    leadsTo: [
+    {
+    lesID: 6,
+    lesson: "Lesson04 - Ctor Summary.docx",
+    name: "Ctor",
+    id: 81
+    }
+    ]
+    },
+    {
+    lesID: 5,
+    lesson: "Udemy",
+    name: "this - MOOC",
+    leadsTo: [
+    {
+    lesID: 6,
+    lesson: "Lesson04 - Ctor Summary.docx",
+    name: "Ctor",
+    id: 81
+    }
+    ]
+    },
+    {
+    lesID: 6,
+    lesson: "Lesson04 - Ctor Summary.docx",
+    name: "Ctor",
+    leadsTo: [
+    {
+    lesID: 7,
+    lesson: "Lesson05 - Basic Inhertiance.docx",
+    name: "ירושה בסיסית",
+    id: 82
+    }
+    ]
+    },
+    {
+    lesID: 7,
+    lesson: "Lesson05 - Basic Inhertiance.docx",
+    name: "ירושה בסיסית",
+    leadsTo: [
+    {
+    lesID: 8,
+    lesson: "Lesson06 - Inhertiance.docx",
+    name: "ירושה - לימוד עצמי",
+    id: 83
+    },
+    {
+    lesID: 9,
+    lesson: "Lesson06 - Inhertiance.docx",
+    name: "ירושה - כיתה הפוכה",
+    id: 84
+    },
+    {
+    lesID: 10,
+    lesson: "Lesson06 - Inhertiance.docx",
+    name: "ירושה - שיעור פרונטלי",
+    id: 85
+    }
+    ]
+    },
+    {
+    lesID: 8,
+    lesson: "Lesson06 - Inhertiance.docx",
+    name: "ירושה - לימוד עצמי",
+    leadsTo: [
+    {
+    lesID: 11,
+    lesson: "Lesson07 - Design Patterns.docx",
+    name: "Design Patterns",
+    id: 86
+    }
+    ]
+    },
+    {
+    lesID: 9,
+    lesson: "Lesson06 - Inhertiance.docx",
+    name: "ירושה - כיתה הפוכה",
+    leadsTo: [
+    {
+    lesID: 11,
+    lesson: "Lesson07 - Design Patterns.docx",
+    name: "Design Patterns",
+    id: 86
+    }
+    ]
+    },
+    {
+    lesID: 10,
+    lesson: "Lesson06 - Inhertiance.docx",
+    name: "ירושה - שיעור פרונטלי",
+    leadsTo: [
+    {
+    lesID: 11,
+    lesson: "Lesson07 - Design Patterns.docx",
+    name: "Design Patterns",
+    id: 86
+    }
+    ]
+    },
+    {
+    lesID: 11,
+    lesson: "Lesson07 - Design Patterns.docx",
+    name: "Design Patterns",
+    leadsTo: [
+    {
+    lesID: 12,
+    lesson: "",
+    name: "סיום מקצוע OOP",
+    id: 87
+    }
+    ]
+    },
+    {
+    lesID: 12,
+    lesson: "",
+    name: "סיום מקצוע OOP",
+    leadsTo: [ ]
+    }
+    ];
 
     // good places to put things on the map
     var places = [
@@ -272,18 +333,12 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
     function buildLessonsLinkedList (userLessons) {
         var node = userLessons[0];
         var firstNode = node;
-        debugger;
+
         for (var i = 1; i < userLessons.length; i++) {
             node.leadsTo = _.find($scope.data, function(part) { return part.lesID === userLessons[i].lesID; });
             node = node.leadsTo;
+            delete node.leadsTo;
         }
-
-        var node = firstNode;
-        debugger;
-        while (node.leadsTo) {
-            node = node.leadsTo;
-        }
-        delete node.leadsTo;
         
         return firstNode;
     }
