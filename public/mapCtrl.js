@@ -3,6 +3,7 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
     $scope.currModalUser = "";
     $http.get('/users').success(function (data) {
         $scope.users = data;
+        init();
     }).error(function (err) {
         console.log(err);
     });
@@ -173,7 +174,7 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
 
     var mapData = {};
 
-    (function init() {
+    function init() {
 
         // greate a map between the data from db id and content
         mapData = buildMapData();
@@ -208,15 +209,14 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
             }
         });
 
-        var azul = new avatarIcon({ iconUrl: 'images/azul.png' });
-        var kfir = new avatarIcon({ iconUrl: 'images/kfir.png' });
-        var adir = new avatarIcon({ iconUrl: 'images/adir.png' });
-        var ofer = new avatarIcon({ iconUrl: 'images/ofer.png' });
+        var avatarsMarkers = []
 
-        L.marker(mapData[Object.keys(mapData)[0]].location, { icon: azul }).addTo(map).bindPopup("Shalom Lah");
-        L.marker(mapData[Object.keys(mapData)[1]].location, { icon: kfir }).addTo(map).bindPopup("I`m Kfir");
-        L.marker(mapData[Object.keys(mapData)[2]].location, { icon: adir }).addTo(map).bindPopup("I`m Adir");
-        L.marker(mapData[Object.keys(mapData)[3]].location, { icon: ofer }).addTo(map).bindPopup("Leeee - Bemet ?");
+        $scope.users.forEach(function(curruser) {
+            avatarsMarkers.push({
+                name : curruser.user.nickname,
+                marker : L.marker(mapData[curruser.user.lesid].location, { icon: new avatarIcon({ iconUrl: 'images/' + curruser.user.avatar })}).addTo(map)
+            });
+        });
 
         // Build the images on the places
         var count = 1;
@@ -243,9 +243,9 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
             var smallPolyline = [];
 
             kp.sons.forEach(function(son) {
-                if (mapData[son.id]) {
+                if (mapData[son.lesid]) {
                     smallPolyline.push(kp.location);
-                    smallPolyline.push(mapData[son.id].location);
+                    smallPolyline.push(mapData[son.lesid].location);
                     wholePolyline.push(smallPolyline);
                     smallPolyline = [];
                 }
@@ -262,7 +262,7 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
         map.on('click', function(ev) {
             console.log(JSON.stringify(ev.latlng)); // ev is an event object (MouseEvent in this case)
         });
-    })();
+    };
 
     function buildNodeLines(lessonNodes, bFade) {
         
@@ -280,7 +280,7 @@ app.controller('mapCtrl', ['$scope', '$http', function($scope, $http) {
         var mapD = {};
         for (var count = 0; count < data.length; count++) {
             var curr = data[count];
-            mapD[curr.id] = { 'name': curr.name, 'location': places[count], 'sons': curr.leadsTo };
+            mapD[curr.lesid] = { 'name': curr.name, 'location': places[count], 'sons': curr.leadsTo };
         }
 
         return mapD;

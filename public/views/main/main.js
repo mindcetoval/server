@@ -24,7 +24,7 @@ app.controller('introCtrl', ['$scope', function ($scope) {
 
     animation = new createjs.Sprite(spritesheet, "static");
     stage.addChild(animation);
-    animation.x = 490;
+    animation.x = 505;
     animation.y -= 42;
     animation.addEventListener("click", playAnimtion);
 
