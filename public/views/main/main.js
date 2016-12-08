@@ -9,7 +9,7 @@ app.controller('introCtrl', ['$scope', function ($scope) {
     var world = new Image();
     world.src = "images/movWorldsmall.png"
     bitmapWorld = new createjs.Bitmap(world);
-    bitmapWorld.x = 500;
+    bitmapWorld.x = 510;
     stage.addChild(bitmapWorld);
 
     spritesheet = new createjs.SpriteSheet({
