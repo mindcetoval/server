@@ -157,15 +157,15 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
 
     var places = [
         [-36.125, 5.875],
+        [-26, 70.875],
         [-55.875, 4.375],
+        [-20.125, 103.375],
+        [-79.875, 86],
         [-57.375, 30.25],
         [-70.875, 27.5],
-        [-65.875, 53.125],
-        [-79.875, 86],
         [-44, 83.875],
+        [-65.875, 53.125],
         [-32.5, 116],
-        [-20.125, 103.375],
-        [-26, 70.875],
         [-34.875, 49.875]
     ];
 
@@ -242,6 +242,8 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
             });
 
             var polyline = L.polyline(wholePolyline, polyOptions).addTo(map);
+            // L.marker(, { title: kp.name }).addTo(map);
+            L.popup({ autoClose: false} ).setLatLng([kp.location[0], kp.location[1]]).setContent(kpName + ' - ' + kp.name).openOn(map);
             wholePolyline = [];
         }
 
@@ -254,7 +256,7 @@ app.controller('mapCtrl', ['$scope', '$http', function ($scope, $http) {
         var mapD = {};
         for (var count = 0; count < data.length; count++) {
             var curr = data[count];
-            mapD[curr.nodes.id] = { 'location' : places[count], 'sons' : curr.leadsTo };
+            mapD[curr.nodes.id] = { 'name': curr.nodes.name, 'location' : places[count], 'sons' : curr.leadsTo };
         }
 
         return mapD;
